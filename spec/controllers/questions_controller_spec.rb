@@ -40,7 +40,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-
   describe 'GET #show' do
     before { get :show, params: { id: question } }
 

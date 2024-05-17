@@ -10,7 +10,7 @@ FactoryBot.define do
 
   trait :with_answers do
     transient do
-      answer_count {2}
+      answer_count {1}
     end
 
     after(:build, :create) do |question, evaluator|
