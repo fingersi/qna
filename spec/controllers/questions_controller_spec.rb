@@ -52,7 +52,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #list' do
+  describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
 
     before { get :index }

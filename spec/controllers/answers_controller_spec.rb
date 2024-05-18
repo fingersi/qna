@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:question) { create(:question, :with_answers, answer_count: 2) }
+  
 
   describe 'GET #index' do
-    let(:question) { create(:question, :with_answers, answer_count: 2) }
-
     before { get :index, params: { question_id: question } }
 
     it 'assign question to @question' do
@@ -17,6 +17,18 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'render index' do
       expect(response).to render_template :index
+    end
+  end
+
+  describe 'GET #new' do
+    before { get :new, params: { question_id: question } }
+
+    it 'assigns new answer to @answer' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
+    it 'render view new' do
+      expect(response).to render_template :new 
     end
   end
 

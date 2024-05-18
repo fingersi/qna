@@ -163,7 +163,6 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails_refactor (1.4.6)
     railties (6.1.7.7)
       actionpack (= 6.1.7.7)
       activesupport (= 6.1.7.7)
@@ -272,7 +271,6 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.0)
   rails-controller-testing
-  rails_refactor
   rspec-rails (~> 6.1.0)
   sass-rails (>= 6)
   selenium-webdriver
