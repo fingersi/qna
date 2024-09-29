@@ -1,0 +1,6 @@
+nav
+  a href= root_path 'Qna'
+  - if current_user
+    = button_to 'log out', destroy_user_session_path, method: :delete
+  - else 
+    = button_to 'log in', user_session_path 

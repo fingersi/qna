@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+
   let(:question) { create(:question, :with_answers, answer_count: 2) }
-  
+  let(:user) { create(:user) }
 
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
@@ -21,6 +22,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { login(user) }
     before { get :new, params: { question_id: question } }
 
     it 'assigns new answer to @answer' do
@@ -33,15 +35,16 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
     let(:question) { create(:question) }
 
     context 'valid attributes' do
       it 'should create answer with valid attributes' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question, body: build(:answer).body, author: user } }.to change(Answer, :count).by(1)
       end
 
       it 'render redirect to question_answer_path' do
-        post :create, params: { question_id: question.id, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question.id, body: build(:answer).body, author: user }
         expect(response).to redirect_to(question_answer_path(assigns(:question), assigns(:answer)))
       end
     end
