@@ -1,0 +1,14 @@
+h2= 'Answer show'
+br
+
+= button_to "delete", question_answer_path(@question, @answer), :method => :delete 
+
+p= @answer.question.title
+p= @answer.question.body
+p= @answer.question.id
+
+br
+
+p= @answer.author.id
+p= @answer.author.email
+p= @answer.body
