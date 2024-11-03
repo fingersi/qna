@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:index, :create, :new, :create_short, :show, :destroy]
+  before_action :find_question, only: [:index, :create, :new, :answer_short, :show, :destroy]
   before_action :find_answer, only: [:show, :destroy]
   
   def index
@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def create_short
+  def answer_short
     @answer = current_user.answers.new(answer_short_params)
     if @answer.save
       notice = 'Answer successfully saved'

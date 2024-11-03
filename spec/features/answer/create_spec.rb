@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-feature "User can create a answer" do
-
+feature "User can create a answer." do
   given(:user) { create :user }
   given(:question) { create :question}
   
@@ -13,10 +12,14 @@ feature "User can create a answer" do
     fill_in 'Body', with: 'Answer for question for short form'
     click_on 'Send answer'
 
+    expect(current_path).to eq question_path(question)
     expect(page).to have_content 'Answer for question for short form'
+    within '.answers' do
+      expect(page).to have_content 'Answer for question for short form'
+    end
   end
 
-  scenario 'user canot create answer with errors' do
+  scenario 'user cannot create answer with errors' do
     sign_in (user)
     visit question_path(question)
     
@@ -35,5 +38,4 @@ feature "User can create a answer" do
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
-
 end

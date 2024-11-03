@@ -9,13 +9,14 @@ button (class= 'for_short_form', id= 'button') = Answer
 
 
 table
-  - @question.answers.each do |a| 
+  .answers
+    - @question.answers.each do |a| 
 
-    tr
-      td= a.id
-      td= a.body 
-      td= a.author&.id
-      td= a.author&.email
-
+      tr
+        td= a.id
+        td= a.body 
+        td= a.author&.id
+        td= a.author&.email
+        
 = render 'answer_form_short', question: @question
 

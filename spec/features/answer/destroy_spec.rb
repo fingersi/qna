@@ -6,10 +6,9 @@ feature "Anthor can destroy answers" do
 
   scenario 'Only author can destroy answer' do
     sign_in(user)
-
     visit question_answer_path( question, (create :answer, question: question ))
-
     click_on 'delete'
+
     expect(page).to have_content 'Only author can delete this answer'
   end
 

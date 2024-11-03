@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :questions, only: %i[ index show new create destroy] do
     resources :answers, only: %i[ index show new create destroy] do
-      post 'create_short', on: :member
+      post 'answer_short', on: :member
     end
   end
 end
