@@ -1,0 +1,22 @@
+h2= 'Question show'
+br
+h3= @question.title
+p= @question.body
+
+button (class= 'for_short_form', id= 'button') = Answer
+
+=  button_to "delete", question_path(@question), :method => :delete 
+
+
+table
+  .answers
+    - @question.answers.each do |a| 
+
+      tr
+        td= a.id
+        td= a.body 
+        td= a.author&.id
+        td= a.author&.email
+        
+= render 'answer_form_short', question: @question
+
