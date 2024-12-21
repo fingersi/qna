@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:index, :create, :new, :answer_short, :show, :destroy]
-  before_action :find_answer, only: [:show, :destroy]
+  before_action :find_answer, only: [:show, :destroy, :update]
   
   def index
     @answers = @question.answers
@@ -15,16 +15,13 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = current_user.answers.new(answer_short_params)
+    @answer = current_user.answers.new(answer_params)
     if @answer.save
-      redirect_to question_answer_path(@question, @answer), notice: 'Answer successfully saved'
-    else
-      render :new, notice: 'Answer not saved'
     end
   end
 
   def answer_short
-    @answer = current_user.answers.new(answer_short_params)
+    @answer = current_user.answers.new(answer_params)
     if @answer.save
       notice = 'Answer successfully saved'
     else
@@ -41,6 +38,21 @@ class AnswersController < ApplicationController
       redirect_to question_path(@question), notice: 'Answer has been succefully deleted'
     end
   end
+
+  def update
+    @answer.update_attribute(  :body, answer_update_params[:body] )
+    @question = @answer.question      
+  end
+
+  def set_best
+    @answer = Answer.find(set_best_params[:answer_id])
+    if @answer.author?(current_user)
+      @answer.set_best
+    else 
+      error = 'Your not question author'
+    end
+    redirect_to question_path(@answer.question), notice: error
+  end
   
   private
   
@@ -53,10 +65,14 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :question_id)
+    params.permit( :question_id, :answer, :body, :id )
   end
 
-  def answer_short_params
-    params.permit(:body, :question_id)
+  def set_best_params
+    params.permit( :question_id, :answer_id )
+  end
+
+  def answer_update_params
+    params.require(:answer).permit( :body )
   end
 end

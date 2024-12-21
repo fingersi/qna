@@ -2,9 +2,9 @@ require 'rails_helper'
 
 feature "User can create a answer." do
   given(:user) { create :user }
-  given(:question) { create :question}
+  given(:question) { create :question }
   
-  scenario 'user can create answer on question page' do
+  scenario 'user can create answer on question page', js: true do
     sign_in (user)
     visit question_path(question)
     
@@ -19,14 +19,14 @@ feature "User can create a answer." do
     end
   end
 
-  scenario 'user cannot create answer with errors' do
+  scenario 'user cannot create answer with errors', js: true do
     sign_in (user)
     visit question_path(question)
     
     click_on 'Answer'
     click_on 'Send answer'
 
-    expect(page).to have_content 'Answer not saved'
+    expect(page).to have_content "Body can't be blank"
   end
 
   scenario 'unauthorized user cannot create question' do

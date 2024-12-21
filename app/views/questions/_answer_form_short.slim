@@ -1,4 +1,4 @@
-  = form_with url: answer_short_question_answer_path(question), local: true, html:{ id: 'form', class: 'hidden'} do |f|
+  = form_with url: question_answers_path(@question), html:{ id: 'form', class: 'hidden'}, local: false do |f|
     = f.label :body
     = f.text_area :body
     = f.submit 'Send answer'

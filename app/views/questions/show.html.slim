@@ -7,16 +7,13 @@ button (class= 'for_short_form', id= 'button') = Answer
 
 =  button_to "delete", question_path(@question), :method => :delete 
 
+.answers
+  table  
+    = render @question.answers
+  
 
-table
-  .answers
-    - @question.answers.each do |a| 
+.answer-errors
+  = render 'shared/errors', resource: @answers
 
-      tr
-        td= a.id
-        td= a.body 
-        td= a.author&.id
-        td= a.author&.email
-        
-= render 'answer_form_short', question: @question
+  = render 'answer_form_short', question: @question
 

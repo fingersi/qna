@@ -1,0 +1,26 @@
+tr
+  td= answer.id
+  td= answer.body 
+  td= answer.author&.id
+  td= answer.author&.email
+
+  - if answer.best   
+    td.best 
+      div id="best-#{answer.id}"
+        p Best answer
+  - else
+    td
+
+  - if user_signed_in?
+    td= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  
+  - if current_user == answer.question.author
+    td= link_to 'Set Best', answer_set_best_path(answer), data: { method: :post }, id: answer.id
+    
+  td= form_with model: answer, local:false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+    = f.label :body, 'Your answer'
+    = f.text_area :body
+    = f.submit 'Save'
+     
+
+

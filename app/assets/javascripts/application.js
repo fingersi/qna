@@ -12,3 +12,6 @@
 //
 //= require_tree .
 //= require short_form.js
+//= require answer_update.js
+//= require jquery
+//= require jquery_ujs
