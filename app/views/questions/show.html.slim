@@ -9,7 +9,8 @@ button (class= 'for_short_form', id= 'button') = Answer
 
 .answers
   table  
-    = render @question.answers
+    = render :partial => "answers/answer", :collection => @question.answers_sort_by_best
+
   
 
 .answer-errors

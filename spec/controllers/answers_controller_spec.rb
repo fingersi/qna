@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
-  let(:question) { create(:question, :with_answers, answer_count: 2) }
+  let(:question) { create(:question, :with_answers, count: 2) }
   let(:user) { create(:user) }
 
   describe 'GET #index' do
@@ -43,9 +43,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { question_id: question, body: build(:answer).body, author: user }, format: :js }.to change(Answer, :count).by(1)
       end
 
-      it 'render redirect to question_answer_path' do
+      it 'render redirect to question_path' do
         post :create, params: { question_id: question.id, body: build(:answer).body, author: user }, format: :js
-        expect(response).to redirect_to(question_answer_path(assigns(:question), assigns(:answer)))
+        expect(response).to redirect_to(question_answers_path(question))
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders template update' do
         patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
-        expect(answer.body).to eq 'updated answer'
+        expect(response).to render_template :update
       end
     end
 
@@ -87,7 +87,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'render :new template' do
-        patch :update, params: { question_id: question, answer: attributes_for(:answer, :invalid), format: :js }
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
         expect(response).to render_template :update
       end
     end

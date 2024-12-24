@@ -18,7 +18,7 @@ tr
     td= link_to 'Set Best', answer_set_best_path(answer), data: { method: :post }, id: answer.id
     
   td= form_with model: answer, local:false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    = f.label :body, 'Your answer'
+    = f.label :update, 'Your answer'
     = f.text_area :body
     = f.submit 'Save'
      

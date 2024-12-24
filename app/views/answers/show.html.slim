@@ -1,7 +1,7 @@
 h2= 'Answer show'
 br
 
-= button_to "delete", question_answer_path(@question, @answer), :method => :delete 
+= button_to "delete", answer_path(@answer), :method => :delete 
 
 p= @answer.question.title
 p= @answer.question.body

@@ -5,16 +5,18 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def set_best    
-    best_answer = Answer.where("best = true and question_id = #{ question.id }")
-    best_answer.each do |ans| 
-      ans.best = false
-      ans.save!
-    end 
-    self.best = true
-    save!
+    best_answers = question.answers.where(best:true)    
+    Answer.transaction do
+      best_answers.each do |ans| 
+        ans.best = false
+        ans.save!
+      end 
+      self.best = true
+      save!
+    end
   end
 
   def author?(user)
-    self.question.author == user
+    question.author_id = user.id
   end
 end
