@@ -9,4 +9,8 @@ class User < ApplicationRecord
 
   validates :email, presence: true
   validates :password, presence: true
+
+  def author?(resource)
+    id == resource.author_id
+  end
 end

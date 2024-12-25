@@ -8,12 +8,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
 function shortFormLinkHandler(event) {
   var form = document.getElementById('form')
-  document.querySelectorAll('.edit-answer-link').forEach(function (item) {
-    item.addEventListener('click', function () {
-      console.log(item.innerHTML);
-    });
-  });
-
   if (form.classList.contains('hidden')) {
     form.classList.remove('hidden')
   } else {

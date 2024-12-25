@@ -45,8 +45,8 @@ class AnswersController < ApplicationController
   end
 
   def set_best
-    @answer = Answer.find(set_best_params[:answer_id])
-    if @answer.author?(current_user)
+    @answer = Answer.find(mark_best_params[:answer_id])
+    if current_user.author?(@answer.question)
       @answer.set_best
     else 
       error = 'Your not question author'
@@ -68,7 +68,7 @@ class AnswersController < ApplicationController
     params.permit( :question_id, :answer, :body, :id )
   end
 
-  def set_best_params
+  def mark_best_params
     params.permit( :question_id, :answer_id )
   end
 
