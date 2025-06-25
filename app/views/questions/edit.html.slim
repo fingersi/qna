@@ -1,0 +1,11 @@
+= render 'shared/errors', resource: @question
+
+= button_to 'delete', question_path(@question), method: :delete 
+
+= button_to 'back to questions', questions_path, method: :get
+
+- if @question.files.attached?
+  - @question.files.each do |file|
+    p= link_to file.filename.to_s, url_for(file)
+
+= render 'form', q: @question 

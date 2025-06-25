@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :question_find, only: [:show, :destroy]
+  before_action :question_find, only: [:show, :destroy, :update, :edit]
 
   def index
     @questions = Question.all
@@ -24,6 +24,19 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
   end
 
+  def edit
+  end
+
+  def update
+    @question.files.attach(params[:question][:files]) if params.dig(:question, :files).present?
+ 
+    if @question.update(question_update_params)
+      redirect_to @question, notice: 'Your question have successfuly updated!'
+    else
+      render :edit, notice: 'Bad params'
+    end
+  end
+
   def destroy 
     if current_user != @question.author
       redirect_to @question, notice: 'Only author can delete this question'
@@ -36,11 +49,14 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
+    params.require(:question).permit(:author_id, :title, :body, files: [])
+  end
+
+  def question_update_params
     params.require(:question).permit(:author_id, :title, :body)
   end
 
   def question_find
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
-
 end

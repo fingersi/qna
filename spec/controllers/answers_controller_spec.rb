@@ -45,7 +45,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render redirect to question_path' do
         post :create, params: { question_id: question.id, body: build(:answer).body, author: user }, format: :js
-        expect(response).to redirect_to(question_answers_path(question))
+        expect(response).to redirect_to(question_path(question))
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render :new template' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid), format: :js }
-        expect(response).to render_template :create
+        expect(response).to redirect_to(question_path(question))
       end
     end
   end
@@ -75,7 +75,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders template update' do
         patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
-        expect(response).to render_template :update
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render :new template' do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
-        expect(response).to render_template :update
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
   end

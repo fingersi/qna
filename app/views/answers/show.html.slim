@@ -1,14 +1,15 @@
 h2= 'Answer show'
-br
 
 = button_to "delete", answer_path(@answer), :method => :delete 
+
+- if @answer.files.attached?
+  - @answer.files.each do |file|
+    p= link_to file.filename.to_s, url_for(file)
+    p= link_to 'delete', delete_attachment_path(file), method: :delete
 
 p= @answer.question.title
 p= @answer.question.body
 p= @answer.question.id
 
-br
+= render 'answer', answer: @answer
 
-p= @answer.author.id
-p= @answer.author.email
-p= @answer.body

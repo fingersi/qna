@@ -13,4 +13,8 @@ module FeatureHelpers
     fill_in 'Body', with: 'Question text'
     click_on 'Ask'
   end
+
+  def create_question_with_file
+
+  end
 end

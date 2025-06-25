@@ -26,7 +26,7 @@ feature "User can create a answer." do
     click_on 'Answer'
     click_on 'Send answer'
 
-    expect(page).to have_content "Body can't be blank"
+    expect(page).to have_content 'Answer not saved'
   end
 
   scenario 'unauthorized user cannot create question' do

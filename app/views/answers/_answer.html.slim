@@ -1,26 +1,40 @@
 tr
-  td= answer.id
-  td= answer.body 
-  td= answer.author&.id
-  td= answer.author&.email
+  th ID     
+  th Body 
+  th Author id
+  th Email
+  th Files
+tr
 
+tr
+  td= answer.id
+  td= link_to answer.body, answer_path(answer) 
+  td= answer.author&.id
+  td= answer.author&.email 
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      td= link_to file.filename.to_s, url_for(file)
+      td= link_to 'delete', delete_attachment_path(file), method: 'delete'
+  - else
+    td= 'no file'
   - if answer.best   
     td.best 
       div id="best-#{answer.id}"
         p Best answer
   - else
-    td
+    td=
 
   - if user_signed_in?
-    td= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    td= link_to 'Edit', edit_answer_path(answer), data: { answer_id: answer.id }
   
   - if current_user == answer.question.author
     td= link_to 'Set Best', answer_set_best_path(answer), data: { method: :post }, id: answer.id
     
-  td= form_with model: answer, local:false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    = f.label :update, 'Your answer'
-    = f.text_area :body
-    = f.submit 'Save'
-     
+  td= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      = f.label :update, 'Your answer'
+      = f.text_area :body
+      = f.file_field :files, multiple: true
+      = f.submit 'Save'
+tr
 
 

@@ -9,6 +9,10 @@ FactoryBot.define do
     body { nil }
   end
 
+  trait :with_file do
+    files { Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/feature_helpers.rb", "file/rb") }
+  end
+
   trait :with_answers do
     transient do
       count { 2 }

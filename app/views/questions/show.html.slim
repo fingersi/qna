@@ -3,9 +3,19 @@ br
 h3= @question.title
 p= @question.body
 
+table 
+  tr
+    - if @question.files.attached?
+      - @question.files.each do |file|
+        td
+          = link_to file.filename.to_s, url_for(file)
+        td
+          = link_to 'delete file', delete_attachment_path(file), method: 'delete'
+
 button (class= 'for_short_form', id= 'button') = Answer
 
-=  button_to "delete", question_path(@question), :method => :delete 
+= button_to "delete", question_path(@question), :method => :delete 
+= button_to "edit", edit_question_path(@question), :method => :get
 
 .answers
   table  
