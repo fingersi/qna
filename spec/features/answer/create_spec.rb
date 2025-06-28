@@ -9,7 +9,7 @@ feature "User can create a answer." do
     visit question_path(question)
     
     click_on 'Answer'
-    fill_in 'Body', with: 'Answer for question for short form'
+    fill_in 'body', with: 'Answer for question for short form'
     click_on 'Send answer'
 
     expect(current_path).to eq question_path(question)
@@ -33,7 +33,7 @@ feature "User can create a answer." do
     visit question_path(question)
     
     click_on 'Answer'
-    fill_in 'Body', with: 'Answer for question for short form'
+    fill_in 'body', with: 'Answer for question for short form'
     click_on 'Send answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'

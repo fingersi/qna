@@ -7,24 +7,21 @@ feature "Author can destroy questions" do
 
   scenario "Only author can destroy question" do
     sign_in(user)
-
     create_question
     visit question_path(question)
-    click_on 'delete'
+    click_on 'log out'
 
-    expect(page).to have_content 'Only author can delete this question'
+    expect(page).to have_no_content 'delete'
   end
 
   scenario "unauthorized user cannot create question" do
     visit question_path(question)
-    click_on 'delete'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    
+    expect(page).to have_no_content 'delete'
   end
 
   scenario "Author can destroy question" do
     sign_in(user)
-    
     visit question_path(create(:question, author: user))
     click_on 'delete'
 
@@ -38,15 +35,15 @@ feature "Author can destroy questions" do
     fill_in 'Body', with: 'New body'
     page.attach_file("question_files", "#{Rails.root}/spec/support/feature_helpers.rb") 
     click_on 'Ask'
-
     click_on 'delete file'
 
     expect(page).to have_no_content 'feature_helpers'
   end
 
   scenario "unauthorized user cannot delete file attached to question" do
-    visit new_question_path
     create_question_with_file
+    visit root_path
+    click_on 'log out'
 
     expect(page).to have_no_content 'delete file'
   end

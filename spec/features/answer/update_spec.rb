@@ -2,11 +2,11 @@ require 'rails_helper'
 
 feature "User can update a answer." do
   given(:user) { create :user }
-  given(:question) { create :question, author: user}
+  given(:question) { create :question, author: user }
   let!(:answer) { create :answer, question: question }
   
   scenario 'user can update answer on question page', js: true do
-    sign_in (user)
+    sign_in(user)
     visit question_path(question)
 
     click_on 'Edit'
