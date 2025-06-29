@@ -5,13 +5,13 @@ feature "User can update a answer." do
   given(:question) { create :question, author: user }
   let!(:answer) { create :answer, question: question }
   
-  scenario 'user can update answer on question page', js: true do
+  scenario 'user can update answer and return to question page', js: true do
     sign_in(user)
     visit question_path(question)
 
     click_on 'Edit'
     fill_in 'answer[body]', with: ' New answer body '
-    click_on 'Save'
+    click_on 'Save answer'
 
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'New answer body'

@@ -14,12 +14,12 @@ module FeatureHelpers
     click_on 'Ask'
   end
 
-  def create_question_with_file
+  def create_question_with_file(user, filename = 'feature_helpers.rb')
     sign_in(user)
     visit new_question_path
     fill_in 'Title', with: 'New title'
     fill_in 'Body', with: 'New body'
-    page.attach_file("question_files", "#{Rails.root}/spec/support/feature_helpers.rb") 
+    page.attach_file("question_files", "#{Rails.root}/spec/support/#{filename}") 
     click_on 'Ask'
   end
 end

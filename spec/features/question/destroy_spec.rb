@@ -28,20 +28,15 @@ feature "Author can destroy questions" do
     expect(page).to have_content 'Question has been succefully deleted'
   end
 
-  scenario "Author can delete one photo attached to question" do
-    sign_in(user)
-    visit new_question_path
-    fill_in 'Title', with: 'New title'
-    fill_in 'Body', with: 'New body'
-    page.attach_file("question_files", "#{Rails.root}/spec/support/feature_helpers.rb") 
-    click_on 'Ask'
+  scenario "Author can delete file attached to question" do
+    create_question_with_file(user, 'feature_helpers.rb')
     click_on 'delete file'
 
-    expect(page).to have_no_content 'feature_helpers'
+    expect(page).to have_no_content 'feature_helpers.rb'
   end
 
   scenario "unauthorized user cannot delete file attached to question" do
-    create_question_with_file
+    create_question_with_file(user)
     visit root_path
     click_on 'log out'
 
