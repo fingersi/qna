@@ -14,7 +14,7 @@ tr
   - if answer.files.attached?
     - answer.files.each do |file|
       td= link_to file.filename.to_s, url_for(file)
-      td= link_to 'delete', delete_attachment_path(file), method: 'delete'
+      td= link_to 'delete', attachment_path(file), method: 'delete'
   - else
     td= 'no file'
   - if answer.best   

@@ -8,5 +8,6 @@ Rails.application.routes.draw do
       post 'set_best', to: 'answers#set_best' 
     end
   end
-  delete 'attachment/:id/delete', to: 'attachment#delete', as: 'delete_attachment'
+
+  resources :attachments, only: :destroy
 end

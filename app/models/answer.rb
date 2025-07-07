@@ -7,13 +7,8 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def set_best  
-    Answer.transaction do
-      question.answers.where(best:true).find_each(batch_size: 100) do |ans| 
-        ans.best = false
-        ans.save!
-      end 
+      question.answers.where(best:true).update_all(best: false)
       self.best = true
       save!
-    end
   end
 end

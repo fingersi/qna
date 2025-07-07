@@ -59,11 +59,8 @@ class AnswersController < ApplicationController
 
   def set_best
     @answer = Answer.find(mark_best_params[:answer_id])
-    if current_user.author?(@answer.question)
-      @answer.set_best
-    else 
-      error = 'Your not question author'
-    end
+    @answer.set_best if current_user.author?(@answer.question)
+    
     redirect_to question_path(@answer.question), notice: error
   end
   
