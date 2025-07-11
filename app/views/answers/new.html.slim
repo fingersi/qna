@@ -1,6 +1,6 @@
 = render 'shared/errors', resource: @answer
 
-= form_with url: question_answers_path(@question) do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Save answer'
+- answer.files.each do |file|
+  td= link_to file.filename.to_s, url_for(file)
+
+= render 'form', question: @question

@@ -13,7 +13,6 @@ table
       td 
         = link_to q.title, question_path(q)
       td 
-        = q.body
+        = link_to q.body, edit_question_path(q)
       td
-        
-
+    

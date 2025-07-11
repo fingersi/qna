@@ -3,20 +3,31 @@ br
 h3= @question.title
 p= @question.body
 
+table 
+  tr
+    - if @question.files.attached?
+      - @question.files.each do |file|
+        td
+          = link_to file.filename.to_s, url_for(file)
+        td
+          = link_to 'delete file', attachment_path(file), method: 'delete'
+
+          - if @question.author == current_user
+
+
 button (class= 'for_short_form', id= 'button') = Answer
 
-=  button_to "delete", question_path(@question), :method => :delete 
+- if @question.author == current_user
+  = button_to "delete", question_path(@question), :method => :delete 
+  = button_to "edit", edit_question_path(@question), :method => :get
 
+.answers
+  table  
+    = render :partial => "answers/answer", :collection => @question.answers.order(best: :desc)
 
-table
-  .answers
-    - @question.answers.each do |a| 
+  
+.answer-errors
+  = render 'shared/errors', resource: @answers
 
-      tr
-        td= a.id
-        td= a.body 
-        td= a.author&.id
-        td= a.author&.email
-        
-= render 'answer_form_short', question: @question
+  = render 'answer_form_short', question: @question
 

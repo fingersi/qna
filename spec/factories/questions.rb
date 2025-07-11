@@ -9,18 +9,21 @@ FactoryBot.define do
     body { nil }
   end
 
+  trait :with_file do
+    files { Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/feature_helpers.rb", "file/rb") }
+  end
+
   trait :with_answers do
     transient do
-      answer_count {1}
+      count { 2 }
     end
 
-    after(:build, :create) do |question, evaluator|
+    after(:build, :create) do |question, evaluator|      
       create_list( 
         :answer,
-        evaluator.answer_count,
-        question: question
+        evaluator.count,
+        question: question,
       )
     end
   end
-
 end
