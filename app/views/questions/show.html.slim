@@ -10,8 +10,10 @@ table
         td
           = link_to file.filename.to_s, url_for(file)
         td
+          = link_to 'delete file', attachment_path(file), method: 'delete'
+
           - if @question.author == current_user
-            = link_to 'delete file', attachment_path(file), method: 'delete'
+
 
 button (class= 'for_short_form', id= 'button') = Answer
 

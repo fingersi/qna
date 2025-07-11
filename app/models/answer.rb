@@ -7,8 +7,8 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def set_best  
-      question.answers.where(best:true).update_all(best: false)
-      self.best = true
-      save!
+    question.answers.where(best:true).update_all(best: false)
+    self.best = true
+    save!
   end
 end
