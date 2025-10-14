@@ -306,6 +306,7 @@ DEPENDENCIES
   launchy
   listen (~> 3.3)
   pg (~> 1.1)
+  public_suffix
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.0)

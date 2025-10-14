@@ -1,15 +1,40 @@
 h2= 'Answer show'
 
-= button_to "delete", answer_path(@answer), :method => :delete 
+= button_to "delete", answer_path(@answer), method: :delete 
+= button_to "Edit", edit_answer_path(@answer), method: :get
+
+table
+  - unless @answer.links.empty?
+    - @answer.links.each do |link|
+      td
+        = link_to link.title, link.url
+        - if link.gist?
+          = javascript_include_tag link.url+".js"
+      td
+       p= link_to 'delete_link', link_path(link), method: :delete 
 
 - if @answer.files.attached?
   - @answer.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
     p= link_to 'delete', attachment_path(file), method: :delete
 
-p= @answer.question.title
-p= @answer.question.body
-p= @answer.question.id
+= render 'shared/show_links', resource: @answer
+ 
+
+table
+  tr
+    th ID     
+    th Title
+    th Body 
+
+  tr 
+    td 
+      p= @answer.question.id
+    td
+      p= @answer.question.title
+    td 
+      p= @answer.question.body
+
 
 = render 'answer', answer: @answer
 

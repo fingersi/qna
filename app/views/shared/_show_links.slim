@@ -1,0 +1,13 @@
+h2
+  'Links'
+
+table 
+  tr
+    - if resource.links.present?
+      - resource.links.each do |link|
+        td
+          = link_to link.title, "http://#{link.url}"
+        td
+          = link_to 'Delete link'
+
+br

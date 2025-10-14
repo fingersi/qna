@@ -7,7 +7,7 @@ class AttachmentsController < ApplicationController
       @file.purge
       notice = 'attachment was deleted'
     else
-      notice = 'your are not an anuthor'
+      notice = 'your are not an author'
     end
  
     redirect_back(fallback_location: root_path, notice: 'file deleted')

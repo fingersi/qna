@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question.links.new
   end
 
   def create
@@ -22,9 +23,11 @@ class QuestionsController < ApplicationController
 
   def show 
     @answer = Answer.new
+    @answer.links.new
   end
 
   def edit
+    @question.links.new
   end
 
   def update
@@ -49,11 +52,11 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:author_id, :title, :body, files: [])
+    params.require(:question).permit(:author_id, :title, :body, files: [], links_attributes: [:title, :url])
   end
 
   def question_update_params
-    params.require(:question).permit(:author_id, :title, :body)
+    params.require(:question).permit(:author_id, :title, :body, links_attributes: [:title, :url])
   end
 
   def question_find

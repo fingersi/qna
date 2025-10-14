@@ -12,26 +12,18 @@ class AnswersController < ApplicationController
 
   def new
     @answer = @question.answers.new
+    @answer.links.new
   end
 
   def create
-    @answer = current_user.answers.new(answer_params)
+    @answer = @question.answers.new(answer_params)
+    @answer.author = current_user
     if @answer.save
       notice = 'Answer successfully saved'
     else
       notice = 'Answer not saved'
     end
     redirect_to question_path(@question), notice: notice  
-  end
-
-  def answer_short
-    @answer = current_user.answers.new(answer_params)
-    if @answer.save
-      notice = 'Answer successfully saved'
-    else
-      notice = 'Answer not saved'
-    end
-    redirect_to question_path(@question), notice: notice
   end
 
   def destroy 
@@ -44,6 +36,7 @@ class AnswersController < ApplicationController
   end
 
   def edit
+    @answer.links.new
   end
 
   def update
@@ -61,7 +54,7 @@ class AnswersController < ApplicationController
     @answer = Answer.find(mark_best_params[:answer_id])
     @answer.set_best if current_user.author?(@answer.question)
     
-    redirect_to question_path(@answer.question), notice: error
+    redirect_to question_path(@answer.question)
   end
   
   private
@@ -75,7 +68,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.permit(:question_id, :answer, :body, :id, files: [])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:title, :url])
   end
 
   def mark_best_params
@@ -83,6 +76,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_update_params
-    params.require(:answer).permit(:body, :id)
+    params.require(:answer).permit(:body, :id, links_attributes: [:title, :url])
   end
 end

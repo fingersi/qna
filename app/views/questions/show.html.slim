@@ -3,6 +3,8 @@ br
 h3= @question.title
 p= @question.body
 
+= button_to "Edit", edit_question_path(@question), method: :get
+
 table 
   tr
     - if @question.files.attached?
@@ -14,6 +16,14 @@ table
 
           - if @question.author == current_user
 
+table 
+  tr
+    - if @question.links.present?
+      - @question.links.each do |link|
+        td
+          = link_to link.title, link.url
+        td
+          = link_to 'delete link'
 
 button (class= 'for_short_form', id= 'button') = Answer
 
@@ -25,9 +35,7 @@ button (class= 'for_short_form', id= 'button') = Answer
   table  
     = render :partial => "answers/answer", :collection => @question.answers.order(best: :desc)
 
-  
 .answer-errors
   = render 'shared/errors', resource: @answers
-
   = render 'answer_form_short', question: @question
 
