@@ -5,18 +5,18 @@ class Link < ApplicationRecord
   validates :url, presence: true
   validate :check_url
 
-
   def check_url
-    uri = URI.parse(url) rescue false
+    uri = URI.parse(url)
 
-    return false unless uri.host.present? || uri.scheme || PublicSuffix.valid?(url, default_rule: nil) 
-
-    true
+    unless uri&.host.present? || uri&.scheme || PublicSuffix.valid?(url, default_rule: nil)
+      errors.add(:url, 'Check url')
+    end
+  rescue URI::InvalidURIError
+    errors.add(:url, 'имеет некорректный формат')
   end
 
   def gist?
     uri = URI.parse(url) rescue false
-    uri.host == 'gist.github.com' 
+    uri.host == 'gist.github.com'
   end
-
 end

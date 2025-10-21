@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :answer do
-    body { "String" }
+    body { 'String' }
     question
     author
   end

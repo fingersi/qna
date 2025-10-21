@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 feature "User can create questions" do
-
   given(:user) { create :user }
   given(:question) { create :question }
 

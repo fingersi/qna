@@ -1,0 +1,17 @@
+h2 User profile
+
+table 
+  tr
+    th Question title
+    th Reward title
+    th Image
+
+  - @user.rewards.each do |r|
+    tr
+      td
+        = r.question.title
+      td
+        = r.name
+      td
+        = image_tag r.image, size: '200x150'
+  

@@ -9,9 +9,9 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  def set_best  
-    question.answers.where(best:true).update_all(best: false)
-    self.best = true
-    save!
+  def set_best
+    question.answers.where(best: true).update_all(best: false)
+    update!(best: true)
+    question.reward.update!(answer: self) if question.reward.present?
   end
 end

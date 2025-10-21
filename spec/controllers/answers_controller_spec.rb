@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-
   let(:question) { create(:question, :with_answers, count: 2) }
   let(:user) { create(:user) }
 
@@ -40,11 +39,11 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'valid attributes' do
       it 'should create answer with valid attributes' do
-        expect { post :create, params: { question_id: question, body: build(:answer).body, author: user }, format: :js }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question.id, answer: { body: build(:answer).body, author: user } } }.to change(Answer, :count).by(1)
       end
 
       it 'render redirect to question_path' do
-        post :create, params: { question_id: question.id, body: build(:answer).body, author: user }, format: :js
+        post :create, params: { question_id: question.id, answer: { body: build(:answer).body, author: user } }
         expect(response).to redirect_to(question_path(question))
       end
     end
@@ -81,7 +80,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'invalid attributes' do
       it 'should not update answer with invalid paramets' do
-        expect do 
+        expect do
           patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
         end.to_not change(answer, :body)
       end

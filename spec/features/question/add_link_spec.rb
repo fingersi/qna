@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature "User can create questions" do
-
+feature "User can create questions with attached link" do
   given(:user) { create :user }
   given(:question) { create :question }
   given(:url) { 'https://gist.github.com/fingersi/8ecbec348a470a6076d7d8760ba4cf83' }
-  
+
   scenario "user can create with link" do 
     sign_in(user)
 
@@ -18,7 +17,6 @@ feature "User can create questions" do
     click_on 'Ask'
 
     expect(page).to have_link 'Best url', href: url
-
   end
 
   scenario "user can update question and add link" do 
@@ -32,5 +30,4 @@ feature "User can create questions" do
 
     expect(page).to have_link 'Edit link url', href: url
   end
-
 end

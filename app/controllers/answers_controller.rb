@@ -1,14 +1,13 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:index, :create, :new, :answer_short]
-  before_action :find_answer, only: [:show, :destroy, :update, :edit]
-  
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :find_question, only: %i[index create new answer_short]
+  before_action :find_answer, only: %i[show destroy update edit]
+
   def index
     @answers = @question.answers
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @answer = @question.answers.new
@@ -18,15 +17,15 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
-    if @answer.save
-      notice = 'Answer successfully saved'
-    else
-      notice = 'Answer not saved'
-    end
-    redirect_to question_path(@question), notice: notice  
+    notice = if @answer.save
+               'Answer successfully saved'
+             else
+               'Answer not saved'
+             end
+    redirect_to question_path(@question), notice: notice
   end
 
-  def destroy 
+  def destroy
     if current_user != @answer.author
       redirect_to answer_path(@answer), notice: 'Only author can delete this answer'
     else
@@ -41,24 +40,23 @@ class AnswersController < ApplicationController
 
   def update
     @answer.files.attach(params[:answer][:files]) if params.dig(:answer, :files).present?
-    if @answer.update(answer_update_params)
-      notice = 'Answer successfully updated'
-    else
-      notice = 'Answer not updated'
-    end
+    notice = if @answer.update(answer_update_params)
+               'Answer successfully updated'
+             else
+               'Answer not updated'
+             end
     @question = @answer.question
-    redirect_to @question     
+    redirect_to @question, notice: notice
   end
 
   def set_best
     @answer = Answer.find(mark_best_params[:answer_id])
     @answer.set_best if current_user.author?(@answer.question)
-    
     redirect_to question_path(@answer.question)
   end
-  
+
   private
-  
+
   def find_question
     @question = Question.with_attached_files.find(params[:question_id])
   end
