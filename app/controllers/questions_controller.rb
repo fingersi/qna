@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :question_find, only: [:show, :destroy]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :question_find, only: %i[show destroy update edit]
 
   def index
     @questions = Question.all
@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    @question.links.new
   end
 
   def create
@@ -15,15 +16,30 @@ class QuestionsController < ApplicationController
 
     if @question.save
       redirect_to @question, notice: 'Your question have successfuly saved!'
-    else 
+    else
       render :new, notice: 'Not valid body or title'
     end
   end
 
-  def show 
+  def show
+    @answer = Answer.new
+    @answer.links.new
   end
 
-  def destroy 
+  def edit
+    @question.links.new
+  end
+
+  def update
+    @question.files.attach(params[:question][:files]) if params.dig(:question, :files).present?
+    if @question.update(question_update_params)
+      redirect_to @question, notice: 'Your question have successfuly updated!'
+    else
+      render :edit, notice: 'Bad params'
+    end
+  end
+
+  def destroy
     if current_user != @question.author
       redirect_to @question, notice: 'Only author can delete this question'
     else
@@ -35,11 +51,14 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:author_id, :title, :body)
+    params.require(:question).permit(:author_id, :title, :body, files: [], links_attributes: [:title, :url], reward_attributes: [:name, :question_id, :answer_id, :image ])
+  end
+
+  def question_update_params
+    params.require(:question).permit(:author_id, :title, :body, links_attributes: [:title, :url])
   end
 
   def question_find
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
-
 end

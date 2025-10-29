@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-
-  let(:question) { create(:question, :with_answers, answer_count: 2) }
+  let(:question) { create(:question, :with_answers, count: 2) }
   let(:user) { create(:user) }
 
   describe 'GET #index' do
@@ -40,25 +39,56 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'valid attributes' do
       it 'should create answer with valid attributes' do
-        expect { post :create, params: { question_id: question, body: build(:answer).body, author: user } }.to change(Answer, :count).by(1)
+        expect { post :create, params: { question_id: question.id, answer: { body: build(:answer).body, author: user } } }.to change(Answer, :count).by(1)
       end
 
-      it 'render redirect to question_answer_path' do
-        post :create, params: { question_id: question.id, body: build(:answer).body, author: user }
-        expect(response).to redirect_to(question_answer_path(assigns(:question), assigns(:answer)))
+      it 'render redirect to question_path' do
+        post :create, params: { question_id: question.id, answer: { body: build(:answer).body, author: user } }
+        expect(response).to redirect_to(question_path(question))
       end
     end
 
     context 'invalid attributes' do
       it 'should not create answer with invalid paramets' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.not_to change(Answer, :count)
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js}.not_to change(Answer, :count)
       end
 
       it 'render :new template' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :new
+        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid), format: :js }
+        expect(response).to redirect_to(question_path(question))
       end
     end
   end
 
+  describe 'PATCH #edit' do
+    before { login(user) }
+    let(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question) }
+
+    context 'valid attributes' do
+      it 'should update answer with valid attributes' do
+        patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
+        answer.reload
+        expect(answer.body).to eq 'updated answer'
+      end
+
+      it 'renders template update' do
+        patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+
+    context 'invalid attributes' do
+      it 'should not update answer with invalid paramets' do
+        expect do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
+        end.to_not change(answer, :body)
+      end
+
+      it 'render :new template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid), format: :js }
+        expect(response).to redirect_to question_path(answer.question)
+      end
+    end
+  end
 end

@@ -1,0 +1,15 @@
+= render 'shared/errors', resource: @answer
+
+= render 'shared/show_links', resource: @answer
+
+
+br
+tr=  
+- @answer.files.each do |file|
+  td= link_to file.filename.to_s, url_for(file)
+  td= button_to "delete", answer_path(@answer), :method => :delete 
+
+tr 
+br
+br
+= render 'form', answer: @answer

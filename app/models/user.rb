@@ -9,4 +9,12 @@ class User < ApplicationRecord
 
   validates :email, presence: true
   validates :password, presence: true
+
+  def author?(resource)
+    id == resource.author_id
+  end
+
+  def rewards
+    Reward.joins(answer: :author).where(answers: { author_id: self })
+  end
 end
