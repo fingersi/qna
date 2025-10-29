@@ -3,7 +3,7 @@ class AttachmentsController < ApplicationController
   before_action :attachment_find, only: [:destroy]
 
   def destroy
-    notice = if @file.record.author == current_user
+    notice = if @file.record.author.id == current_user.id
                @file.purge
                'attachment was deleted'
              else
