@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users
   root to: "questions#index"
 
@@ -8,6 +7,7 @@ Rails.application.routes.draw do
       post 'set_best', to: 'answers#set_best' 
     end
   end
-
   resources :attachments, only: :destroy
+  resources :links, only: :destroy
+  resource :profile, only: :show
 end

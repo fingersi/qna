@@ -1,5 +1,8 @@
 = render 'shared/errors', resource: @answer
 
+= render 'shared/show_links', resource: @answer
+
+
 br
 tr=  
 - @answer.files.each do |file|

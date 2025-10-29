@@ -26,19 +26,23 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.4', require: false
-gem 'slim-rails'
 gem 'devise'
 gem 'jquery-rails'
-gem 'aws-sdk-s3', require: false
+gem 'public_suffix'
+gem 'slim-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 6.1.0'
   gem 'factory_bot_rails', '6.2'
-  gem 'rails-controller-testing'
   gem 'launchy'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails', '~> 6.1.0'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do

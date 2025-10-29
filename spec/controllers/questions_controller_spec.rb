@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
-  let(:question) { create(:question) }
+  let(:question) { create(:question, :with_links, links_count: 2) }
   let(:user) { create(:user) }
 
   describe 'GET #new' do
@@ -12,12 +11,16 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
+    it 'assigns new question to new @Question' do
+      expect(assigns(:question).links.first).to be_a_new(Link)
+    end
+
     it 'render view new' do
-      expect(response).to render_template :new 
+      expect(response).to render_template :new
     end
   end
 
-  describe 'POST #create ' do  
+  describe 'POST #create ' do
     before { login(user) }
     context 'with valid params' do
       it 'create question with valid date' do

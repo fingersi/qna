@@ -1,0 +1,14 @@
+- if resource.persisted?
+  h2
+    'Links'
+
+table 
+  tr
+    - resource.links.each do |link|
+      - if link.title.present?
+        td
+          = link_to link.title, "#{link.url}"
+        td
+          = link_to 'Delete link'
+
+br
