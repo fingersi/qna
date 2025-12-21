@@ -10,7 +10,7 @@
     <%= javascript_include_tag :application, 'data-turbolinks-track': 'reload', async: false %>
 
     <% flash.each do |type, msg| %>
-      <div>
+      <div class="flash flash-notice" data-controller="flash" data-flash-type="notice">
         <%= msg %>
       </div>
     <% end %>  

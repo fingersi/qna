@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :questions, only: %i[ index show new create update destroy edit ] do
     resources :answers, shallow: true do
       post 'set_best', to: 'answers#set_best' 
+      post 'vote', to: 'answers#vote'
     end
   end
   resources :attachments, only: :destroy

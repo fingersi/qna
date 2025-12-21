@@ -21,7 +21,7 @@ feature "Anthor can destroy answers" do
 
   scenario "Author can destroy answer" do
     sign_in(user)
-    visit answer_path(create(:answer, question: question, author: user))
+    visit answer_path(create(:answer, question: quesxtion, author: user))
     click_on 'delete'
 
     expect(page).to have_content 'Answer has been succefully deleted'

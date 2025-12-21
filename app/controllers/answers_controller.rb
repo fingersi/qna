@@ -1,7 +1,11 @@
 class AnswersController < ApplicationController
+
+  include Voted
+
   before_action :authenticate_user!, except: %i[index show]
   before_action :find_question, only: %i[index create new answer_short]
   before_action :find_answer, only: %i[show destroy update edit]
+  before_action :find_answer_link, only: %i[set_best vote]
 
   def index
     @answers = @question.answers
@@ -50,7 +54,6 @@ class AnswersController < ApplicationController
   end
 
   def set_best
-    @answer = Answer.find(mark_best_params[:answer_id])
     @answer.set_best if current_user.author?(@answer.question)
     redirect_to question_path(@answer.question)
   end
@@ -69,11 +72,12 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body, files: [], links_attributes: [:title, :url])
   end
 
-  def mark_best_params
-    params.permit(:question_id, :answer_id)
+  def for_link_params
+    params.permit(:question_id, :answer_id, :decision)
   end
 
   def answer_update_params
     params.require(:answer).permit(:body, :id, links_attributes: [:title, :url])
   end
+
 end
