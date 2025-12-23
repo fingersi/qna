@@ -4,6 +4,8 @@ window.addEventListener('load', function () {
   document.querySelectorAll('[data-vote-type]').forEach(function (item) {
     item.addEventListener('ajax:complete', function (e) {
       notice = document.querySelector('[data-flash-type="notice"]')
+      console.log('e')
+      console.log(notice)
       if (notice) {
         notice.textContent = JSON.parse(e.detail[0].response).notice
       } else {

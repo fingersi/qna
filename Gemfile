@@ -29,9 +29,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
-gem 'jquery-rails'
 gem 'public_suffix'
 gem 'slim-rails'
+gem 'rails-ujs'
 
 
 group :development, :test do
@@ -60,7 +60,7 @@ end
 group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '4.9.0'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'shoulda-matchers', '5.2.0'
 end

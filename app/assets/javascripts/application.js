@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require_tree .
+//= require rails-ujs
 //= require short_form.js
 //= require answer_update.js
 //= require answer_vote.js
