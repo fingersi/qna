@@ -11,5 +11,6 @@ window.addEventListener('load', function () {
         form.classList.add('hidden')
       }
     })
-  });
-});
+  })
+})
+

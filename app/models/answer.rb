@@ -1,4 +1,7 @@
 class Answer < ApplicationRecord
+
+  include Votable
+
   belongs_to :question
   belongs_to :author, class_name: 'User'
 
@@ -14,4 +17,5 @@ class Answer < ApplicationRecord
     update!(best: true)
     question.reward.update!(answer: self) if question.reward.present?
   end
+
 end
