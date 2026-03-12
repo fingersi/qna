@@ -47,6 +47,8 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
   config.log_level = :info
 
+  config.middleware.insert_before(Rack::Runtime, Rack::MethodOverride) # Опционально, если нужно быть в начале
+  config.middleware.use Rack::Static, urls: ["/.well-known/appspecific"], root: "tmp"
 
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise

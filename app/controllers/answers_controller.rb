@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[show destroy update edit]
   before_action :find_answer_link, only: %i[set_best vote]
 
+  after_action :publish_answer, only: [:create]
+  
   def index
     @answers = @question.answers
   end
@@ -26,7 +28,7 @@ class AnswersController < ApplicationController
              else
                'Answer not saved'
              end
-    redirect_to question_path(@question), notice: notice
+    redirect_to @question, notice: notice
   end
 
   def destroy
@@ -80,4 +82,22 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body, :id, links_attributes: [:title, :url])
   end
 
+  def publish_answer
+
+    return unless @answer.persisted?
+    
+    ActionCable.server.broadcast(
+      "answers_question_#{@question.id}",
+      {
+        id: @answer.id,
+        html: ApplicationController.render(
+          partial: "answers/answer",
+          locals: {
+            answer: @answer,
+            user: current_user
+          }
+        )
+      }
+    )
+  end
 end

@@ -3,13 +3,16 @@ require 'rails_helper'
 feature "User can update a answer." do
   given(:user) { create :user }
   given(:question) { create :question, author: user }
-  let!(:answer) { create :answer, question: question }
+  let!(:answer) { create :answer, question: question, author: user}
 
   scenario 'user can update answer and return to question page', js: true do
     sign_in(user)
     visit question_path(question)
+    sleep 10
 
     click_on 'Edit'
+    sleep 10
+    
     fill_in 'answer[body]', with: ' New answer body '
     click_on 'Save answer'
 
