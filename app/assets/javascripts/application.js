@@ -13,5 +13,9 @@
 //= require_tree .
 //= require rails-ujs
 //= require short_form.js
+//= require action_cable
 //= require answer_update.js
 //= require answer_vote.js
+
+var App = App || {};
+App.cable = ActionCable.createConsumer();

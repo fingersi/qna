@@ -1,4 +1,7 @@
 class Question < ApplicationRecord
+  
+  include Commentable
+
   belongs_to :author, class_name: 'User'
 
   has_many :links, as: :linkable

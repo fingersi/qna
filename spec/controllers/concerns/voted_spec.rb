@@ -27,7 +27,6 @@ shared_examples_for 'answer_vote' do
     it 'create new Vote' do
       expect { post :vote, params: { answer_id: answer.id, decision: true  } }.to change(Vote, :count).by(0)
     end 
-
   end
 
 end

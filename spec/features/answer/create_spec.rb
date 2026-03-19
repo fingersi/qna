@@ -3,6 +3,11 @@ require 'rails_helper'
 feature "User can create a answer." do
   given(:user) { create :user }
   given(:question) { create :question }
+  given(:answer) { create :answer, question: question }
+
+  it_behaves_like 'commentable' do
+    let(:path_to_item) { answer_path(answer) }
+  end
 
   scenario 'user can create answer on question page', js: true do
     sign_in(user)

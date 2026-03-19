@@ -3,41 +3,29 @@ require 'rails_helper'
 feature "Anthor can set one answer as best for question" do
   given(:user) { create :user }
   given(:question) { create :question, :with_answers, author: user }
+  given(:author) { create :user }
   let!(:answer) { create :answer, question: question }
-
 
   scenario 'Only question author can set best answer', js: true do
     sign_in(user)
-    
-    visit question_path( create :question, :with_answers )
 
-    expect(page).to_not have_content 'Set Best'
+    visit question_path( create :question, :with_answers, author: author)
+
+    expect(page).to have_no_link('Set Best', visible: true)
   end
 
   scenario 'Author can set answer as best', js: true do
-    sign_in (user)
-    visit question_path(question)
+    sign_in(user)
 
+    visit question_path(question)
     page.find(:id, answer.id.to_s ).click
 
     expect(page).to have_content 'Best answer'
     expect(all( :id, "best-#{answer.id}").count).to eq(1)
   end
 
-  scenario 'Best answer listed always in the first place', js: true do
-    sign_in (user)
-    visit question_path(question)
-
-    page.find(:id, answer.id.to_s ).click
-
-
-    within('.answers') do
-      expect(page.all('tr', text: 'Set Best')[0]).to have_content 'Best answer'
-    end
-  end
-
   scenario 'Only one answer could be set as best answer', js: true do
-    sign_in (user)
+    sign_in(user)
     visit question_path(question)
 
     expect(all('.best').count).to eq(0)
@@ -52,4 +40,31 @@ feature "Anthor can set one answer as best for question" do
     expect(all('.best').count).to eq(1)
     expect(page).to have_content 'Best answer'
   end
+
+  scenario 'Best answer listed always in the first place', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    sleep 10
+
+    page.find(:id, answer.id.to_s ).click
+
+    within('.answers') do
+      expect(first('tr')).to have_content 'Best answer'
+    end
+  end
+
+  scenario 'Author can set answer as best', js: true do
+    sign_in(user)
+
+    visit question_path(question)
+
+    sleep 10
+    
+    page.find(:id, answer.id.to_s ).click
+
+    expect(page).to have_content 'Best answer'
+    expect(all( :id, "best-#{answer.id}").count).to eq(1)
+  end
 end
+

@@ -1,12 +1,15 @@
 h2 User profile
 
+
+= current_user.email
+
 table 
   tr
     th Question title
     th Reward title
     th Image
 
-  - @user.rewards.each do |r|
+  - current_user.rewards.each do |r|
     tr
       td
         = r.question.title
