@@ -1,33 +1,11 @@
-table
-  tr
-    th ID     
-    th Body 
-    th Author id
-    th Email
-    th Rating
-    th Dislikes
-    th Files
-  tr
+tr id="answer-#{answer.id}"
+  td= answer.id
+  td= link_to answer.body, answer_path(answer)
+  td= answer.author&.id
+  td= answer.author&.email
 
-  tr
-    td= answer.id
-    td= link_to answer.body, answer_path(answer) 
-    td= answer.author&.id
-    td= answer.author&.email 
-    td data-answer-id=answer.id data-answer-view="true"
-      = answer.view_votes(current_user) 
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        td= link_to file.filename.to_s, url_for(file)
-        td= link_to 'delete file', attachment_path(file), method: 'delete'
-    - else
-      td= 'no file'
-    - if answer.best   
-      td.best 
-        div id="best-#{answer.id}"
-          p Best answer
-    - else
-      td=
+  td data-answer-id=answer.id data-answer-view="true"
+    = answer.view_votes(user)
 
     - if can? :update, answer
       td= link_to 'Edit', edit_answer_path(answer), data: { answer_id: answer.id }
@@ -56,19 +34,42 @@ table
                     answer_id: answer.id, \
                     vote_type: "dislike" \
                   }
+  - if answer.files.attached?
+    td
+      - answer.files.each do |file|
+        p= link_to file.filename.to_s, url_for(file)
+        p= link_to 'delete file', attachment_path(file), method: :delete
+  - else
+    td no file
 
-    td= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.label :update, 'Your answer'
-        = f.text_area :body
-        = f.file_field :files, multiple: true
-        = f.fields_for :links do |l|
-          p
-            = l.label :title
-            = l.text_field :title
-          p
-            = l.label :url
-            = l.text_field :url
-        = f.submit 'Save'
-  tr
+  - if answer.best
+    td.best
+      div id="best-#{answer.id}"
+        p Best answer
+  - else
 
+    td= link_to 'Edit', edit_answer_path(answer), class: "hidden", data: { answer_id: answer.id, login: true, author_id: answer.author.id, label: 'edit' }
 
+    td= link_to 'Set Best', answer_set_best_path(answer), method: :post, id: answer.id, class: "hidden", data: { login: true, author_id: answer.question.author.id, label: 'setbest' }
+
+    td.hidden data-answer-author-id=answer.author.id
+      = link_to 'Like',
+        answer_vote_path(answer, decision: true),
+        method: :post,
+        remote: true,
+        format: :json,
+        data: { answer_id: answer.id, vote_type: "like", login: true, author_user: user }
+    
+    td.hidden data-answer-author-id=answer.author.id
+      = link_to 'Dislike',
+        answer_vote_path(answer, decision: false),
+        method: :post,
+        remote: true,
+        format: :json,
+        data: { answer_id: answer.id, vote_type: "dislike", login: true, author_user: user }
+
+    td
+      - if answer.comments
+        =link_to answer.comments.count, answer_path(answer) 
+      - else 
+        'no comments'

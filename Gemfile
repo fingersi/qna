@@ -33,6 +33,9 @@ gem 'public_suffix'
 gem 'slim-rails'
 gem 'rails-ujs'
 gem 'cancancan'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
 
 
 group :development, :test do

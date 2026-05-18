@@ -4,6 +4,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, :with_answers, count: 2) }
   let(:user) { create(:user) }
 
+
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
 
@@ -45,6 +46,13 @@ RSpec.describe AnswersController, type: :controller do
       it 'render redirect to question_path' do
         post :create, params: { question_id: question.id, answer: { body: build(:answer).body, author: user } }
         expect(response).to redirect_to(question_path(question))
+      end
+
+      it "WS message sent" do
+        expect {
+        post :create, params: { answer: { body: 'Test body' }, question_id: question.id }
+        }.to have_broadcasted_to("answers_question_#{question.id}")
+        .with(hash_including(:id, :html)) 
       end
     end
 

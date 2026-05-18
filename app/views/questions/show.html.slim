@@ -1,4 +1,8 @@
-h2= 'Question show'
+.question-show data-question-id=@question.id
+
+h2 data-question-id=@question.id Question show
+
+
 br
 h3= @question.title
 p= @question.body
@@ -31,6 +35,11 @@ table
           td
             = link_to 'delete link', link_path(link), method: :delete
 
+= render 'comments/form', commentable: @question
+
+= render 'comments/list', commentable: @question
+
+
 button (class= 'for_short_form', id= 'button') = Answer
 
 .answers
@@ -38,6 +47,6 @@ button (class= 'for_short_form', id= 'button') = Answer
     = render :partial => "answers/answer", :collection => @question.answers.order(best: :desc)
 
 .answer-errors
-  = render 'shared/errors', resource: @answers
+  = render 'shared/errors', resource: @answer
   = render 'answer_form_short', question: @question
 

@@ -24,7 +24,6 @@ feature "User can vote for question.", js: true do
     expect(
       page.find('[data-answer-view="true"]')
     ).to have_text('-1')
-
   end
 
   scenario 'answer author cannot vote for his answer' do
