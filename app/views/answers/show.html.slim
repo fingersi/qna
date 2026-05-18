@@ -1,13 +1,17 @@
 h2= 'Answer show'
 
-= button_to "delete", answer_path(@answer), method: :delete 
-= button_to "Edit", edit_answer_path(@answer), method: :get
+
+- if can? :destroy, @answer
+  = button_to "delete", answer_path(@answer), method: :delete 
+
+- if can? :update, @question
+  = button_to "edit", edit_question_path(@answer), method: :get
 
 table
   - unless @answer.links.empty?
     - @answer.links.each do |link|
       td
-        = link_to link.title, link.url
+        = link_to link.title, link.external_url
         - if link.gist?
           = javascript_include_tag link.url+".js"
       td

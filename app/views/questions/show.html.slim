@@ -3,7 +3,11 @@ br
 h3= @question.title
 p= @question.body
 
-= button_to "Edit Question", edit_question_path(@question), method: :get
+- if can? :destroy, @question
+  = button_to "Delete", question_path(@question), :method => :delete 
+
+- if can? :update, @question
+  = button_to "Edit", edit_question_path(@question), :method => :get
 
 table 
   tr
@@ -12,7 +16,8 @@ table
         td
           = link_to file.filename.to_s, url_for(file)
         td
-          = link_to 'delete file', attachment_path(file), method: 'delete'
+          -if can? :destroy, file
+            = link_to 'delete file', attachment_path(file), method: :delete
 
           - if @question.author == current_user
 
@@ -22,14 +27,11 @@ table
       - @question.links.each do |link|
         td
           = link_to link.title, link.url
-        td
-          = link_to 'delete link'
+        -if can? :destroy, link
+          td
+            = link_to 'delete link', link_path(link), method: :delete
 
 button (class= 'for_short_form', id= 'button') = Answer
-
-- if @question.author == current_user
-  = button_to "delete", question_path(@question), :method => :delete 
-  = button_to "edit", edit_question_path(@question), :method => :get
 
 .answers
   table  

@@ -10,9 +10,8 @@ feature "User can vote for question.", js: true do
   scenario 'user can vote for answer on question page' do
     sign_in(user)
     visit question_path(question)
-    page.find('[data-vote-type="like"]', wait: 3).click
 
-    save_and_open_page
+    page.find('[data-vote-type="like"]', wait: 5).click
 
     expect(page).to have_content 'You successfully voted'
     
@@ -20,7 +19,7 @@ feature "User can vote for question.", js: true do
       page.find('[data-answer-view="true"]')
     ).to have_text('1')
 
-    page.find('[data-vote-type="dislike"]', wait: 3).click
+    page.find('[data-vote-type="dislike"]', wait: 5).click
 
     expect(
       page.find('[data-answer-view="true"]')
@@ -33,10 +32,8 @@ feature "User can vote for question.", js: true do
     answer = create :answer, question: question_user_author, author: user
     sign_in(user)
     visit question_path(question_user_author)
-    save_and_open_page
-    page.find('[data-vote-type="like"]', wait: 5).click
 
-    expect(page).to have_content 'You cannot vote. You are author or vote before'
+    expect(page).to have_no_content 'Like'
     
     expect(
       page.find('[data-answer-view="true"]')

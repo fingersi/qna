@@ -32,6 +32,7 @@ gem 'devise'
 gem 'public_suffix'
 gem 'slim-rails'
 gem 'rails-ujs'
+gem 'cancancan'
 
 
 group :development, :test do

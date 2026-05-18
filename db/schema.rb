@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_12_08_181418) do
+ActiveRecord::Schema.define(version: 2026_05_16_173703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 2025_12_08_181418) do
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.string "commentable_type", null: false
+    t.bigint "commentable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "title", null: false
     t.string "url", null: false
@@ -62,6 +73,16 @@ ActiveRecord::Schema.define(version: 2025_12_08_181418) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable"
+  end
+
+  create_table "o_auth_providers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider"
+    t.string "uid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["provider", "uid"], name: "index_o_auth_providers_on_provider_and_uid"
+    t.index ["user_id"], name: "index_o_auth_providers_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -91,6 +112,7 @@ ActiveRecord::Schema.define(version: 2025_12_08_181418) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.boolean "admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -109,6 +131,8 @@ ActiveRecord::Schema.define(version: 2025_12_08_181418) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users", column: "author_id"
+  add_foreign_key "comments", "users"
+  add_foreign_key "o_auth_providers", "users"
   add_foreign_key "questions", "users", column: "author_id"
   add_foreign_key "rewards", "answers"
   add_foreign_key "rewards", "questions"

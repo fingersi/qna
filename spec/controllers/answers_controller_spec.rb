@@ -63,17 +63,17 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #edit' do
     before { login(user) }
     let(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question) }
+    let(:answer) { create(:answer, question: question, author: user) }
 
     context 'valid attributes' do
       it 'should update answer with valid attributes' do
-        patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
+        patch :update, params: { id: answer.id, answer: { body: 'updated answer' } }
         answer.reload
         expect(answer.body).to eq 'updated answer'
       end
 
       it 'renders template update' do
-        patch :update, params: { id: answer,  answer: { body: 'updated answer' }, format: :js }
+        patch :update, params: { id: answer.id,  answer: { body: 'updated answer' } }
         expect(response).to redirect_to question_path(answer.question)
       end
     end

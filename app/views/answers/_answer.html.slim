@@ -29,33 +29,33 @@ table
     - else
       td=
 
-    - if user_signed_in?
+    - if can? :update, answer
       td= link_to 'Edit', edit_answer_path(answer), data: { answer_id: answer.id }
     
-    - if current_user == answer.question.author
-        td= link_to 'Set Best', answer_set_best_path(answer), data: { method: :post }, id: answer.id
-      
-    - if current_user != answer.author
-    td
-      = link_to 'Like', \
-                answer_vote_path(answer, decision: true), \
-                method: :post, \
-                remote: true, \
-                format: :json, \
-                data: { \
-                  answer_id: answer.id, \
-                  vote_type: "like" \
-                }
-    td
-      = link_to 'Dislike', \
-                answer_vote_path(answer, decision: false), \
-                remote: true, \
-                method: :post, \
-                format: :json, \
-                data: { \
-                  answer_id: answer.id, \
-                  vote_type: "dislike" \
-                }
+    - if can? :set_best, answer
+      td= link_to 'Set Best', set_best_answer_path(answer), data: { method: :post }, id: answer.id      
+    
+    - if can? :like, answer
+      td
+        = link_to 'Like', \
+                  vote_answer_path(answer, decision: true), \
+                  method: :post, \
+                  remote: true, \
+                  format: :json, \
+                  data: { \
+                    answer_id: answer.id, \
+                    vote_type: "like" \
+                  }
+      td
+        = link_to 'Dislike', \
+                  vote_answer_path(answer, decision: false), \
+                  remote: true, \
+                  method: :post, \
+                  format: :json, \
+                  data: { \
+                    answer_id: answer.id, \
+                    vote_type: "dislike" \
+                  }
 
     td= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.label :update, 'Your answer'
