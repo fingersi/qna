@@ -19,4 +19,8 @@ class Link < ApplicationRecord
     uri = URI.parse(url) rescue false
     uri.host == 'gist.github.com'
   end
+
+  def external_url
+    url.start_with?('http://', 'https://') ? url : "https://#{url}"
+  end
 end

@@ -2,8 +2,12 @@ module Voted
 
   extend ActiveSupport::Concern
 
+  included do
+    before_action :set_votable, only: :vote
+  end
+
   def vote
-    return render_cannot_vote if @answer.author?(current_user)
+    authorize! :vote, @votable
 
     decision = for_link_params[:decision]
     @answer.clear_vote(current_user)
@@ -24,14 +28,23 @@ module Voted
 
   private
 
-  def render_cannot_vote
-    render json: {
-      notice: 'You cannot vote. You are author or vote before'
-    }, status: :unprocessable_entity
+  def set_votable
+    votable_id = params["#{model_name}_id"] || params[:id]
+    instance_record = model_klass.find(votable_id)
+    @votable = instance_record 
+    instance_variable_set("@#{model_name}", instance_record)
   end
 
   def find_answer_link
     @answer = Answer.find(params[:answer_id])
+  end
+
+  def model_klass
+    controller_name.classify.constantize
+  end
+
+  def model_name
+    controller_name.singularize
   end
 
 end

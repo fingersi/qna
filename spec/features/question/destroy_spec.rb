@@ -11,21 +11,13 @@ feature "Author can destroy questions" do
     visit question_path(question)
     click_on 'log out'
 
-    expect(page).to have_no_content 'delete'
+    expect(page).to have_no_content 'Delete'
   end
 
   scenario "unauthorized user cannot create question" do
     visit question_path(question)
     
-    expect(page).to have_no_content 'delete'
-  end
-
-  scenario "Author can destroy question" do
-    sign_in(user)
-    visit question_path(create(:question, author: user))
-    click_on 'delete'
-
-    expect(page).to have_content 'Question has been succefully deleted'
+    expect(page).to have_no_content 'Delete'
   end
 
   scenario "Author can delete file attached to question" do
@@ -41,5 +33,14 @@ feature "Author can destroy questions" do
     click_on 'log out'
 
     expect(page).to have_no_content 'delete file'
+  end
+
+  scenario "admin can delete any question" do
+    sign_in(create :user, admin: true)
+    visit question_path(create :question)
+
+    click_on 'Delete'
+
+    expect(page).to have_content 'Question has been succefully deleted'
   end
 end

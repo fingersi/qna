@@ -2,6 +2,10 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :question_find, only: %i[show destroy update edit]
 
+  authorize_resource instance_name: :question 
+
+  skip_authorization_check only: [:index, :show]
+
   after_action :publish_question, only: [:create]
 
   def index
@@ -43,12 +47,8 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user != @question.author
-      redirect_to @question, notice: 'Only author can delete this question'
-    else
-      @question.destroy
-      redirect_to questions_path, notice: 'Question has been succefully deleted'
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Question has been succefully deleted'
   end
 
   private
