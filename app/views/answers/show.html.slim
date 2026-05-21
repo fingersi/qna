@@ -1,7 +1,5 @@
 .answer-show data-question-id=@answer.question_id data-answer-id=@answer.id
 
-
-
 - if can? :destroy, @answer
   = button_to "delete", answer_path(@answer), method: :delete 
 

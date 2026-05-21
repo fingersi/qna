@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-shared_examples_for 'answer_vote' do
+shared_examples_for 'Votable' do
     describe 'POST #vote' do
 
     let(:user) { create(:user) }
@@ -11,7 +11,7 @@ shared_examples_for 'answer_vote' do
     before { login(user) }
 
     it 'create new Vote' do
-      expect { post :vote, params: { answer_id: answer.id, decision: true  } }.to change(Vote, :count).by(1)
+      expect { post :vote, params: { id: answer.id, decision: true  } }.to change(Vote, :count).by(1)
     end 
 
   end
@@ -25,7 +25,7 @@ shared_examples_for 'answer_vote' do
     before { login(author) }
 
     it 'create new Vote' do
-      expect { post :vote, params: { answer_id: answer.id, decision: true  } }.to change(Vote, :count).by(0)
+      expect { post :vote, params: { id: answer.id, decision: true  } }.to change(Vote, :count).by(0)
     end 
   end
 

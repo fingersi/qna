@@ -36,6 +36,9 @@ gem 'cancancan'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10.4'
+gem 'oj'
 
 
 group :development, :test do

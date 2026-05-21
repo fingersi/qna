@@ -4,6 +4,8 @@ class CommentsController < ApplicationController
 
   after_action :broadcast_comment, only: :create
 
+  load_and_authorize_resource
+
   def create
     @comment = @commentable.comments.build(comment_params)
     @comment.user = current_user
