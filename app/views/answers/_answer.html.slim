@@ -7,13 +7,13 @@ tr id="answer-#{answer.id}"
   td data-answer-id=answer.id data-answer-view="true"
     = answer.view_votes(user)
 
-    - if can? :update, answer
+    - if user == answer.author
       td= link_to 'Edit', edit_answer_path(answer), data: { answer_id: answer.id }
     
-    - if can? :set_best, answer
+    - if user == answer.question.author
       td= link_to 'Set Best', set_best_answer_path(answer), data: { method: :post }, id: answer.id      
     
-    - if can? :like, answer
+    - if user != answer.author
       td
         = link_to 'Like', \
                   vote_answer_path(answer, decision: true), \
@@ -50,11 +50,11 @@ tr id="answer-#{answer.id}"
 
     td= link_to 'Edit', edit_answer_path(answer), class: "hidden", data: { answer_id: answer.id, login: true, author_id: answer.author.id, label: 'edit' }
 
-    td= link_to 'Set Best', answer_set_best_path(answer), method: :post, id: answer.id, class: "hidden", data: { login: true, author_id: answer.question.author.id, label: 'setbest' }
+    td= link_to 'Set Best', set_best_answer_path(answer), method: :post, id: answer.id, class: "hidden", data: { login: true, author_id: answer.question.author.id, label: 'setbest' }
 
     td.hidden data-answer-author-id=answer.author.id
       = link_to 'Like',
-        answer_vote_path(answer, decision: true),
+        vote_answer_path(answer, decision: true),
         method: :post,
         remote: true,
         format: :json,
@@ -62,7 +62,7 @@ tr id="answer-#{answer.id}"
     
     td.hidden data-answer-author-id=answer.author.id
       = link_to 'Dislike',
-        answer_vote_path(answer, decision: false),
+        vote_answer_path(answer, decision: false),
         method: :post,
         remote: true,
         format: :json,

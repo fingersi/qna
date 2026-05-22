@@ -44,7 +44,10 @@ button (class= 'for_short_form', id= 'button') = Answer
 
 .answers
   table  
-    = render :partial => "answers/answer", :collection => @question.answers.order(best: :desc)
+    = render partial: "answers/answer", 
+         collection: @question.answers.order(best: :desc), 
+         as: :answer, 
+         locals: { user: current_user }
 
 .answer-errors
   = render 'shared/errors', resource: @answer

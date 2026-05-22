@@ -4,6 +4,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, :with_answers, count: 2) }
   let(:user) { create(:user) }
 
+  it_behaves_like 'Votable'
 
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
@@ -21,6 +22,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+
   describe 'GET #new' do
     before { login(user) }
     before { get :new, params: { question_id: question } }
@@ -32,10 +34,15 @@ RSpec.describe AnswersController, type: :controller do
     it 'render view new' do
       expect(response).to render_template :new 
     end
+    it 'should create answer with valid attributes' do
+        expect { 
+          post :create, params: { question_id: question.id, answer: { body: 'Valid answer' } } 
+        }.to change(Answer, :count).by(1)
+    end
   end
 
   describe 'POST #create' do
-    before { login(user) }
+    before { sign_in(user) }
     let(:question) { create(:question) }
 
     context 'valid attributes' do
@@ -100,3 +107,4 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 end
+

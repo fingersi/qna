@@ -4,8 +4,8 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   
-  load_and_authorize_resource :question, shallow: true
-  load_and_authorize_resource :answer, through: :question, shallow: true, member: %[set_best]
+  load_and_authorize_resource :question, only: %i[index create new]
+  load_and_authorize_resource :answer, through: :question, shallow: true
 
   before_action :answer_update_params, only: :update
 
