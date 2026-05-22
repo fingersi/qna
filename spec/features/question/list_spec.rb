@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "User get question/questions" do
 
   given(:user) { create :user }
-  given(:question) { create :question}
+  given(:question) { create :question }
 
   scenario 'user can get list of all questions' do
     sign_in(user)

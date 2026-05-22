@@ -6,10 +6,10 @@ Rails.application.routes.draw do
     resources :comments, only: %i[create destroy]
 
     resources :answers, shallow: true do
-      post 'set_best', to: 'answers#set_best' 
-      post 'vote', to: 'answers#vote'
-
-      resources :comments, only: %i[create destroy]
+      member do
+        post :set_best
+        post :vote
+      end
     end
   end
   resources :attachments, only: :destroy

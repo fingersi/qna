@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "User can create questions" do
   given(:user) { create :user }
-  given(:question) { create :question }
+  given(:question) { create :question, author: user }
 
   it_behaves_like 'commentable' do
     let(:path_to_item) { question_path(question) }

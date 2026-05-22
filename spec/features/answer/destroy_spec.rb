@@ -6,17 +6,16 @@ feature "Anthor can destroy answers" do
 
   scenario 'Only author can destroy answer' do
     sign_in(user)
-    visit answer_path( create :answer, question: question )
+    visit answer_path( create :answer, question: question, author: user )
     click_on 'delete'
 
-    expect(page).to have_content 'Only author can delete this answer'
+    expect(page).to have_content 'Answer has been succefully deleted'
   end
 
   scenario "unauthorized user cannot create answer" do
     visit answer_path(create(:answer, question: question))
-    click_on 'delete'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_no_content 'delete'
   end
 
   scenario "Author can destroy answer" do

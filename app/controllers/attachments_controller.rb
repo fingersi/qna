@@ -1,20 +1,11 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :attachment_find, only: [:destroy]
+
+  load_and_authorize_resource class: 'ActiveStorage::Attachment', instance_name: :file
 
   def destroy
-    notice = if @file.record.author.id == current_user.id
-               @file.purge
-               'attachment was deleted'
-             else
-               'your are not an author'
-             end
-    redirect_back(fallback_location: root_path, notice: notice)
+    @file.purge
+    redirect_back(fallback_location: root_path, notice: 'attachment was deleted')
   end
-
-  private
-
-  def attachment_find
-    @file = ActiveStorage::Attachment.find(params[:id])
-  end
+  
 end

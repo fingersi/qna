@@ -3,9 +3,11 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[index create new answer_short]
-  before_action :find_answer, only: %i[show destroy update edit]
-  before_action :find_answer_link, only: %i[set_best vote]
+  
+  load_and_authorize_resource :question, shallow: true
+  load_and_authorize_resource :answer, through: :question, shallow: true, member: %[set_best]
+
+  before_action :answer_update_params, only: :update
 
   after_action :publish_answer, only: [:create]
   
@@ -32,12 +34,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user != @answer.author
-      redirect_to answer_path(@answer), notice: 'Only author can delete this answer'
-    else
-      @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Answer has been succefully deleted'
-    end
+    @answer.destroy
+    redirect_to question_path(@answer.question), notice: 'Answer has been succefully deleted'
   end
 
   def edit
@@ -56,19 +54,12 @@ class AnswersController < ApplicationController
   end
 
   def set_best
-    @answer.set_best if current_user.author?(@answer.question)
+    authorize! :set_best, @answer
+    @answer.set_best
     redirect_to question_path(@answer.question)
   end
 
   private
-
-  def find_question
-    @question = Question.with_attached_files.find(params[:question_id])
-  end
-
-  def find_answer
-    @answer = Answer.with_attached_files.find(params[:id])
-  end
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: [:title, :url])
@@ -79,7 +70,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_update_params
-    params.require(:answer).permit(:body, :id, links_attributes: [:title, :url])
+    params.require(:answer).permit(:body, :id, files: [],  links_attributes: [:title, :url])
   end
 
   def publish_answer
