@@ -1,9 +1,14 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+  
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks'}
   root to: "questions#index"
 
   resources :questions, only: %i[ index show new create update destroy edit ] do
+    resources :subscriptions, only: [:create, :destroy], shallow: true
     resources :comments, only: %i[create destroy], defaults: { commentable: 'questions' }
     resources :answers, shallow: true do
       member do

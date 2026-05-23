@@ -12,6 +12,7 @@ module Qna
     config.load_defaults 6.1
 
     config.middleware.use Warden::Manager
+    config.active_job.queue_adapter = :sidekiq
 
     # Configuration for the application, engines, and railties goes here.
     #

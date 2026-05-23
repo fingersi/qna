@@ -1,0 +1,9 @@
+<h1> <%= @hi %>, <%= @user.email %>!</h1>
+
+<% @questions.each do |question| %>
+  <li>
+    <%= link_to question.title, question_url(question) %>
+    <p><%= question.body %></p> 
+  </li>
+<% end %>
+

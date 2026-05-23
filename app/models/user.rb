@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :questions, foreign_key: :author_id, dependent: :destroy
   has_many :answers, foreign_key: :author_id, dependent: :destroy
   has_many :oauthproviders, class_name: 'OAuthProvider', foreign_key: 'user_id', dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribed_questions, through: :subscriptions, source: :question
 
   validates :email, presence: true
   validates :password, presence: true
@@ -24,4 +26,8 @@ class User < ApplicationRecord
     Reward.joins(answer: :author).where(answers: { author_id: self })
   end
 
+  def find_subscription(question)
+    subscriptions.find_by(question: question)
+  end
+    
 end

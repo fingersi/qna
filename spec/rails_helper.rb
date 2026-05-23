@@ -46,6 +46,12 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :chrome
 
+  config.include ActiveJob::TestHelper, type: :job
+
+  config.before(:each, type: :job) do
+    ActiveJob::Base.queue_adapter = :test
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join('spec/fixtures')
 
