@@ -9,6 +9,8 @@ class Answer < ApplicationRecord
   has_many :links, as: :linkable
   has_many_attached :files
 
+  after_create :notify_subscribers
+
   accepts_nested_attributes_for :links, reject_if: :all_blank
 
   validates :body, presence: true
@@ -19,4 +21,9 @@ class Answer < ApplicationRecord
     question.reward.update!(answer: self) if question.reward.present?
   end
 
+  private
+
+  def notify_subscribers
+    AnswerNotificationJob.perform_later(self)
+  end
 end

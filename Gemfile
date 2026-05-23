@@ -39,6 +39,9 @@ gem 'omniauth-rails_csrf_protection'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10.4'
 gem 'oj'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 
 group :development, :test do

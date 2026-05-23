@@ -22,7 +22,7 @@ class Ability
   def user_ability
     guest_ability
     cannot :destroy, Question
-    can :create, [Question, Answer, Link]
+    can :create, [Question, Answer, Link, Subscription]
     can :update, [Question, Answer, Link], author: user
     can :destroy, Answer, author: user
     can :destroy, Link do |link| 
@@ -41,7 +41,8 @@ class Ability
       answer.author.id != user.id
     end
     can :profile, :all
-    cannot :other_user, :all 
+    cannot :other_user, :all
+    can :destroy, Subscription, user: user
   end
 
   def guest_ability

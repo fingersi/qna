@@ -17,4 +17,15 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'find_subscription by question' do
+    let!(:user) { create :user }
+    let(:question) { create :question }
+    let(:subcription) { create :subscription, question: question, user: user }
+
+    it 'returns subscription' do
+      expect(user).to receive(:find_subscription).with(question).and_return(subcription)
+      user.find_subscription(question)
+    end
+  end
+
 end
