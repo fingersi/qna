@@ -8,10 +8,8 @@ p
 p
   span
     - if result.commentable_type == 'Question'
-      / Ссылка на саму страницу вопроса
       = link_to "Question page: #{result.commentable.title}", question_path(result.commentable)
     - else
-      / Ссылка на страницу ответа (через его родительский вопрос)
       = link_to "Answer page: #{result.commentable.body.truncate(10)}", answer_path(result.commentable)
 
   = render 'search/dates', record: result
