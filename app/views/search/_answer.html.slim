@@ -1,0 +1,13 @@
+
+p 
+  span
+    strong Answer: 
+
+  span
+    = link_to result.body.truncate(15), answer_path(result)
+
+p
+
+  = render 'search/dates', record: result
+  
+ 

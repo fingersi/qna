@@ -17,6 +17,13 @@
     <% end %>  
   </head>
 
+  <div class="search-bar">
+    <%= form_with url: search_path, method: :get, local: true do |f| %>
+      <%= f.text_field :q, value: params[:q], placeholder: "Поиск по сайту...", required: true %>
+      <%= f.button "Search", type: :submit %>
+    <% end %>
+  </div>
+
   <%= render 'shared/log_out' %>
 
   <body data-logged-in="<%= user_signed_in? %>" 

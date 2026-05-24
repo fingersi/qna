@@ -1,7 +1,15 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  mount Sidekiq::Web => '/sidekiq'
+
+  get 'search/index'
+  authenticate :user do
+    get 'search', to: 'search#index', as: :search
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks'}

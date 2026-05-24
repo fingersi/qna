@@ -1,0 +1,29 @@
+
+
+h2 Search results for: «#{@query}»
+
+ul
+  li
+    = link_to "All results", search_path(q: @query)
+  li 
+    = link_to "Questions", search_path(q: @query, scope: 'questions')
+  li 
+    = link_to "Answers", search_path(q: @query, scope: 'answers')
+  li 
+    = link_to "Comments", search_path(q: @query, scope: 'comments')
+
+- if @results.any?
+  - @results.each do |result|
+    = render partial: "search/#{result.class.model_name.element}", locals: { result: result, user: current_user }
+- else
+  p Cannot find anything
+
+- if @total_pages > 1
+  - if @current_page > 1
+    = link_to "Back", search_path(q: @query, scope: @current_scope, page: @current_page - 1)
+
+  span.pag-info 
+    | Page #{@current_page} из #{@total_pages}
+  
+  - if @current_page < @total_pages
+    = link_to "Next", search_path(q: @query, scope: @current_scope, page: @current_page + 1), class: "pag-btn"

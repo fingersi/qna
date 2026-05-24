@@ -1,0 +1,15 @@
+
+p 
+  span
+    strong Question: 
+
+  span
+    = result.title.truncate(150)
+  span
+    = result.body.truncate(150)
+
+p
+  span Question page: #{link_to result.title, question_path(result)}
+
+  = render 'search/dates', record: result
+  
