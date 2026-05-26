@@ -11,7 +11,9 @@ set :ssh_options, {
   keys: %w(/home/alexey/.ssh/id_rsa),
   forward_agent: true,
   auth_methods: %w(publickey password),
-  port: 311
+  port: 311,
+  keepalive: true,
+  keepalive_interval: 30
 }
 #
 # The server-based syntax can be used to override options:
