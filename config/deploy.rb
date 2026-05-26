@@ -13,7 +13,7 @@ set :rvm_ruby_version, "2.7.2"
 
 set :bundle_jobs, 4
 
-append :linked_files, "config/database.yml", 'config/master.key'
+append :linked_files, 'config/database.yml', 'config/master.key', 'config/storage.yml'
 
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets",
                      "public/system", "vendor", "storage", "node_modules",
