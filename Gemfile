@@ -56,6 +56,8 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+  gem 'database_cleaner-active_record'
+
 end
 
 group :development do
@@ -67,7 +69,12 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'database_cleaner-active_record'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 end
 
 group :test do
@@ -76,7 +83,6 @@ group :test do
   gem 'selenium-webdriver', '4.9.0'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'shoulda-matchers', '5.2.0'
-  gem 'database_cleaner-active_record'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
