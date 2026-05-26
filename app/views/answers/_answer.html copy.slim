@@ -7,6 +7,33 @@ tr id="answer-#{answer.id}"
   td data-answer-id=answer.id data-answer-view="true"
     = answer.view_votes(user)
 
+    - if user == answer.author
+      td= link_to 'Edit', edit_answer_path(answer), data: { answer_id: answer.id }
+    
+    - if user == answer.question.author
+      td= link_to 'Set Best', set_best_answer_path(answer), data: { method: :post }, id: answer.id      
+    
+    - if user != answer.author
+      td
+        = link_to 'Like', \
+                  vote_answer_path(answer, decision: true), \
+                  method: :post, \
+                  remote: true, \
+                  format: :json, \
+                  data: { \
+                    answer_id: answer.id, \
+                    vote_type: "like" \
+                  }
+      td
+        = link_to 'Dislike', \
+                  vote_answer_path(answer, decision: false), \
+                  remote: true, \
+                  method: :post, \
+                  format: :json, \
+                  data: { \
+                    answer_id: answer.id, \
+                    vote_type: "dislike" \
+                  }
   - if answer.files.attached?
     td
       - answer.files.each do |file|

@@ -68,6 +68,9 @@ function showSetBestBtns(currentUserId) {
   var setBestBtns = document.querySelectorAll('a.hidden[data-label="setbest"]');
   if (setBestBtns.length === 0) return;
   setBestBtns.forEach(function (btn) {
+    console.log("btn.getAttribute('data-author-id):" + btn.getAttribute('data-author-id'));
+    console.log('currentUserId:' + currentUserId);
+    console.log("authorId === currentUserId:" + authorId === currentUserId)
     var authorId = btn.getAttribute('data-author-id');
     if (authorId === currentUserId) {
       btn.classList.remove('hidden');
@@ -79,6 +82,12 @@ function showLikeBtns(currentUserId) {
   var setBestBtns = document.querySelectorAll('td.hidden[data-answer-author-id]');
   if (setBestBtns.length === 0) return;
   setBestBtns.forEach(function (btn) {
+    console.log('Like')
+    console.log("btn.getAttribute('data-author-id):" + btn.getAttribute('data-author-id'));
+    console.log('currentUserId:' + currentUserId);
+    console.log("authorId === currentUserId:" + authorId === currentUserId)
+    console.log("authorId === currentUserId:" + authorId === currentUserId)
+
     var authorId = btn.getAttribute('data-answer-author-id');
     if (authorId != currentUserId) {
       btn.classList.remove('hidden');
