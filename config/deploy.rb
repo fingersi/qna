@@ -1,4 +1,3 @@
-# config valid for current version and patch releases of Capistrano
 lock "~> 3.20.1"
 
 set :application, "qna"
@@ -22,6 +21,13 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets",
 set :whenever_environment, -> { fetch(:rails_env, 'production') }
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage, 'production')}" }
 set :whenever_roles, -> { :app }
+
+set :unicorn_pid,           -> { "#{shared_path}/tmp/pids/unicorn.pid" }
+set :unicorn_config_path,   -> { "#{current_path}/config/unicorn.rb" }
+set :unicorn_roles,         -> { :app }
+
+after 'deploy:publishing', 'deploy:restart_unicorn'
+
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
