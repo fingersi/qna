@@ -1,3 +1,20 @@
-  test:
 
-     mysql41: 9307
+common:
+  sphinx_version: '2.2.11'
+
+development:
+  mysql41: 9306
+
+test:
+  mysql41: 9307
+
+production:
+  mysql41: 9312
+  indices_location: '/home/deploy/qna/shared/db/sphinx/production'
+  configuration_file: '/home/deploy/qna/shared/config/production.sphinx.conf'
+  pid_file: '/home/deploy/qna/shared/log/searchd.production.pid'
+  log: '/home/deploy/qna/shared/log/searchd.log'
+  query_log: '/home/deploy/qna/shared/log/searchd.query.log'
+  bin_path: '/usr/local/bin'
+  searchd_binary_name: searchd
+  indexer_binary_name: indexer
