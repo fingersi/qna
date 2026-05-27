@@ -13,7 +13,7 @@ p= @question.body
 - if can? :update, @question
   = button_to "Edit", edit_question_path(@question), :method => :get
 
-- if @subscription = current_user.find_subscription(@question)
+- if current_user & @subscription = current_user&.find_subscription(@question)
   = button_to "Unsubscribe", subscription_path(@subscription), :method => :delete
 - else
   = button_to "Subscribe", question_subscriptions_path(@question), :method => :post 
