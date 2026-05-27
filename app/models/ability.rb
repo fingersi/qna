@@ -22,7 +22,7 @@ class Ability
   def user_ability
     guest_ability
     cannot :destroy, Question
-    can :create, [Question, Answer, Link, Subscription]
+    can :create, [Question, Answer, Link, Subscription, Comment]
     can :update, [Question, Answer, Link], author: user
     can :destroy, Answer, author: user
     can :destroy, Link do |link| 
