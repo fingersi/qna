@@ -45,6 +45,10 @@ gem 'whenever', require: false
 gem 'mysql2'
 gem 'thinking-sphinx', '~> 4.4'
 
+group :production do
+  gem 'unicorn'
+end
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,6 +61,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'database_cleaner-active_record'
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development do
