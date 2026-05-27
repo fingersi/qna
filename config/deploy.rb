@@ -18,6 +18,11 @@ append :linked_files, 'config/database.yml', 'config/master.key', 'config/storag
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets",
                      "public/system", "vendor", "storage", "node_modules",
                      "public/packs"
+
+set :whenever_environment, -> { fetch(:rails_env, 'production') }
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage, 'production')}" }
+set :whenever_roles, -> { :app }
+
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
