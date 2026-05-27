@@ -2,4 +2,3 @@
 :queues:
   - default
   - mailers
-:logfile: ./log/sidekiq.log
