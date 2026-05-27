@@ -26,6 +26,18 @@ set :unicorn_pid,           -> { "#{shared_path}/tmp/pids/unicorn.pid" }
 set :unicorn_config_path,   -> { "#{current_path}/config/unicorn.rb" }
 set :unicorn_roles,         -> { :app }
 
+namespace :deploy do
+  desc 'Restart unicorn via systemd'
+  task :restart_unicorn do
+    on roles(:app) do
+      execute :sudo, 'systemctl', 'is-active', '--quiet', 'unicorn_qna', '&&',
+              :sudo, 'systemctl', 'reload', 'unicorn_qna', '||',
+              :sudo, 'systemctl', 'start', 'unicorn_qna'
+    end
+  end
+end
+
+
 after 'deploy:publishing', 'deploy:restart_unicorn'
 
 
