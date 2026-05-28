@@ -1,48 +1,49 @@
-tr id="answer-#{answer.id}"
-  td= answer.id
-  td= link_to answer.body, answer_path(answer)
-  td= answer.author&.id
-  td= answer.author&.email
+- cache answer do
+  tr id="answer-#{answer.id}"
+    td= answer.id
+    td= link_to answer.body, answer_path(answer)
+    td= answer.author&.id
+    td= answer.author&.email
 
-  td data-answer-id=answer.id data-answer-view="true"
-    = answer.view_votes(user)
+    td data-answer-id=answer.id data-answer-view="true"
+      = answer.view_votes(user)
 
-  - if answer.files.attached?
-    td
-      - answer.files.each do |file|
-        p= link_to file.filename.to_s, url_for(file)
-        p= link_to 'delete file', attachment_path(file), method: :delete
-  - else
-    td no file
+    - if answer.files.attached?
+      td
+        - answer.files.each do |file|
+          p= link_to file.filename.to_s, url_for(file)
+          p= link_to 'delete file', attachment_path(file), method: :delete
+    - else
+      td no file
 
-  - if answer.best
-    td.best
-      div id="best-#{answer.id}"
-        p Best answer
-  - else
+    - if answer.best
+      td.best
+        div id="best-#{answer.id}"
+          p Best answer
+    - else
 
-    td= link_to 'Edit', edit_answer_path(answer), class: "hidden", data: { answer_id: answer.id, login: true, author_id: answer.author.id, label: 'edit' }
+      td= link_to 'Edit', edit_answer_path(answer), class: "hidden", data: { answer_id: answer.id, login: true, author_id: answer.author.id, label: 'edit' }
 
-    td= link_to 'Set Best', set_best_answer_path(answer), method: :post, id: answer.id, class: "hidden", data: { login: true, author_id: answer.question.author.id, label: 'setbest' }
+      td= link_to 'Set Best', set_best_answer_path(answer), method: :post, id: answer.id, class: "hidden", data: { login: true, author_id: answer.question.author.id, label: 'setbest' }
 
-    td.hidden data-answer-author-id=answer.author.id
-      = link_to 'Like',
-        vote_answer_path(answer, decision: true),
-        method: :post,
-        remote: true,
-        format: :json,
-        data: { answer_id: answer.id, vote_type: "like", login: true, author_user: user }
-    
-    td.hidden data-answer-author-id=answer.author.id
-      = link_to 'Dislike',
-        vote_answer_path(answer, decision: false),
-        method: :post,
-        remote: true,
-        format: :json,
-        data: { answer_id: answer.id, vote_type: "dislike", login: true, author_user: user }
+      td.hidden data-answer-author-id=answer.author.id
+        = link_to 'Like',
+          vote_answer_path(answer, decision: true),
+          method: :post,
+          remote: true,
+          format: :json,
+          data: { answer_id: answer.id, vote_type: "like", login: true, author_user: user }
+      
+      td.hidden data-answer-author-id=answer.author.id
+        = link_to 'Dislike',
+          vote_answer_path(answer, decision: false),
+          method: :post,
+          remote: true,
+          format: :json,
+          data: { answer_id: answer.id, vote_type: "dislike", login: true, author_user: user }
 
-    td
-      - if answer.comments
-        =link_to answer.comments.count, answer_path(answer) 
-      - else 
-        'no comments'
+      td
+        - if answer.comments
+          =link_to answer.comments.count, answer_path(answer) 
+        - else 
+          'no comments'

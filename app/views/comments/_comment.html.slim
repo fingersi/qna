@@ -1,3 +1,4 @@
-tr.comment data-comment-id=comment.id data-commentable-type=comment.commentable_type data-commentable-id=comment.commentable_id
-  td= comment.user.email
-  td= comment.body
+- cache comment do
+  tr.comment data-comment-id=comment.id data-commentable-type=comment.commentable_type data-commentable-id=comment.commentable_id
+    td= comment.user.email
+    td= comment.body
