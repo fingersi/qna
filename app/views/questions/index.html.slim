@@ -11,8 +11,9 @@ div data-questions-list="true"
       th Body   
 
     tbody.questions-list  
-      = render partial: 'question',
-               collection: @questions,
-               as: :question
+      cache collection_cache_key_for :question do 
+        = render partial: 'question',
+          collection: @questions,
+          as: :question
 
   

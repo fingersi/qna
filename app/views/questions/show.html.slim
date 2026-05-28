@@ -1,11 +1,12 @@
-.question-show data-question-id=@question.id
+- cache @question do
+  .question-show data-question-id=@question.id
 
-h2 data-question-id=@question.id Question show
+  h2 data-question-id=@question.id Question show
 
 
-br
-h3= @question.title
-p= @question.body
+  br
+  h3= @question.title
+  p= @question.body
 
 - if can? :destroy, @question
   = button_to "Delete", question_path(@question), :method => :delete 
@@ -18,43 +19,44 @@ p= @question.body
 - else
   = button_to "Subscribe", question_subscriptions_path(@question), :method => :post 
 
-table 
-  tr
-    - if @question.files.attached?
-      - @question.files.each do |file|
-        td
-          = link_to file.filename.to_s, url_for(file)
-        td
-          -if can? :destroy, file
-            = link_to 'delete file', attachment_path(file), method: :delete
-
-          - if @question.author == current_user
-
-table 
-  tr
-    - if @question.links.present?
-      - @question.links.each do |link|
-        td
-          = link_to link.title, link.url
-        -if can? :destroy, link
+  table 
+    tr
+      - if @question.files.attached?
+        - @question.files.each do |file|
           td
-            = link_to 'delete link', link_path(link), method: :delete
+            = link_to file.filename.to_s, url_for(file)
+          td
+            -if can? :destroy, file
+              = link_to 'delete file', attachment_path(file), method: :delete
 
-= render 'comments/form', commentable: @question
+            - if @question.author == current_user
 
-= render 'comments/list', commentable: @question
+  table 
+    tr
+      - if @question.links.present?
+        - @question.links.each do |link|
+          td
+            = link_to link.title, link.url
+          -if can? :destroy, link
+            td
+              = link_to 'delete link', link_path(link), method: :delete
+
+  = render 'comments/form', commentable: @question
+
+  = render 'comments/list', commentable: @question
 
 
-button (class= 'for_short_form', id= 'button') = Answer
+  button (class= 'for_short_form', id= 'button') = Answer
 
-.answers
-  table  
-    = render partial: "answers/answer", 
-         collection: @question.answers.order(best: :desc), 
-         as: :answer, 
-         locals: { user: current_user }
+  .answers
+    table  
+      = render partial: "answers/answer", 
+          collection: @question.answers.order(best: :desc), 
+          as: :answer, 
+          locals: { user: current_user },
+          cached: true
 
-.answer-errors
-  = render 'shared/errors', resource: @answer
-  = render 'answer_form_short', question: @question
+  .answer-errors
+    = render 'shared/errors', resource: @answer
+    = render 'answer_form_short', question: @question
 

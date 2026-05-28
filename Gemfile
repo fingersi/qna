@@ -44,6 +44,7 @@ gem 'sinatra', require: false
 gem 'whenever', require: false
 gem 'mysql2'
 gem 'thinking-sphinx', '~> 4.4'
+gem 'redis-rails'
 
 group :production do
   gem 'unicorn'

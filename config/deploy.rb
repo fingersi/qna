@@ -2,7 +2,7 @@ lock "~> 3.20.1"
 
 set :application, "qna"
 set :repo_url, "git@github.com:fingersi/qna.git"
-set :branch, "capistrano" 
+set :branch, "cache" 
 
 set :deploy_to, "/home/deploy/qna"
 set :deploy_user, 'deploy'
